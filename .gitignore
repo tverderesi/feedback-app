@@ -23,4 +23,4 @@ yarn-debug.log*
 yarn-error.log*
 
 #learning content
-/src/dynamic_content_example.js
+/learning_content
