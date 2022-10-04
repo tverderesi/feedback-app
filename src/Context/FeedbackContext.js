@@ -28,7 +28,7 @@ export const FeedbackProvider = ({ children }) => {
   const addFeedback = newFeedback => {
     if (!newFeedback.rating) {
       window.alert('Rating is null');
-    } else if (window.confirm('Add Feedback?')) {
+    } else {
       newFeedback.id = uuidv4();
       setFeedback([newFeedback, ...feedback]);
     }
@@ -40,14 +40,19 @@ export const FeedbackProvider = ({ children }) => {
     }
   };
 
+  const updateFeedback = (id, updateItem) => {
+    setFeedback(feedback.map(item => (item.id === id ? { ...item, ...updateItem } : item)));
+  };
+
   return (
     <FeedbackContext.Provider
       value={{
-        feedback: feedback,
+        feedback,
+        feedbackEdit,
         deleteFeedback,
         addFeedback,
         editFeedback,
-        feedbackEdit,
+        updateFeedback,
       }}
     >
       {children}
