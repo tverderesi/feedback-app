@@ -1,0 +1,14 @@
+{
+  "feedback": [
+    {
+      "id": 1,
+      "rating": 10,
+      "text": "This is an awesome feedback app!"
+    },
+    {
+      "id": 2,
+      "rating": 8,
+      "text": "It could be more modular so I could implement in any project."
+    }
+  ]
+}
