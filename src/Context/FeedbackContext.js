@@ -1,19 +1,23 @@
+import { useEffect } from 'react';
 import { createContext, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { FeedbackData } from '../data/FeedbackData';
 
 const FeedbackContext = createContext();
 
 export const FeedbackProvider = ({ children }) => {
-  // Hardcoded Data
-  const [feedback, setFeedback] = useState([
-    {
-      id: 4,
-      text: 'This item is from context.',
-      rating: 10,
-    },
-    ...FeedbackData,
-  ]);
+  const [feedback, setFeedback] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchFeedback();
+  }, []);
+
+  //FETCHing feedback
+  const fetchFeedback = async () => {
+    const response = await fetch('http://localhost:5000/feedback?_sort=id&_order=desc');
+    const data = await response.json();
+    setFeedback(data);
+    setIsLoading(false);
+  };
 
   // Handling Feedback
   const [feedbackEdit, setFeedbackEdit] = useState({
@@ -29,7 +33,6 @@ export const FeedbackProvider = ({ children }) => {
     if (!newFeedback.rating) {
       window.alert('Rating is null');
     } else {
-      newFeedback.id = uuidv4();
       setFeedback([newFeedback, ...feedback]);
     }
   };
@@ -49,6 +52,7 @@ export const FeedbackProvider = ({ children }) => {
       value={{
         feedback,
         feedbackEdit,
+        isLoading,
         deleteFeedback,
         addFeedback,
         editFeedback,
