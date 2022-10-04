@@ -13,7 +13,7 @@ export const FeedbackProvider = ({ children }) => {
 
   //FETCHing feedback
   const fetchFeedback = async () => {
-    const response = await fetch('http://localhost:5000/feedback?_sort=id&_order=desc');
+    const response = await fetch('/feedback?_sort=id&_order=desc');
     const data = await response.json();
     setFeedback(data);
     setIsLoading(false);
@@ -29,12 +29,15 @@ export const FeedbackProvider = ({ children }) => {
     setFeedbackEdit({ item, edit: true });
   };
 
-  const addFeedback = newFeedback => {
-    if (!newFeedback.rating) {
-      window.alert('Rating is null');
-    } else {
-      setFeedback([newFeedback, ...feedback]);
-    }
+  const addFeedback = async newFeedback => {
+    const response = await fetch('/feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newFeedback),
+    });
+
+    const data = await response.json();
+    setFeedback([data, ...feedback]);
   };
 
   const deleteFeedback = id => {
